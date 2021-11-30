@@ -1,0 +1,17 @@
+<div th:fragment="miscitas">
+    <div class="container-fluid" style="width: 100%">
+        <div class="table table-responsive">
+            <table id="mis_citas" class="table caption-top">
+                <caption id="table_caption" class="fw-bold text-center text-white" th:text="#{miscitas.text}"
+                         style="font-size: large; background-color: #0d6efd; min-width: 234px"></caption>
+                <tbody>
+                <tr th:id="'cita' + ${citaStat.index}" class="result text-center"
+                    style="border-bottom: 2px solid #0d6efd; border-right: 2px solid #0d6efd; border-left: 2px solid #0d6efd; min-width: 234px"
+                    data-th-each="cita : ${miscitas}">
+                    <td th:text="${cita.fechaCita}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

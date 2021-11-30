@@ -1,0 +1,476 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/bootstrap.css" type="text/css" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="shortcut icon" href="#">
+</head>
+<style>
+    .separador {
+        border-left: 2px solid white;
+        height: 100%;
+    }
+
+    .selected {
+        background: #41ff0c !important;
+        color: white;
+    }
+
+    tr {
+        cursor: pointer;
+    }
+</style>
+<body>
+
+<!-- NAVBAR -->
+<nav th:insert="fragments/navigation_admin.html :: navbar_admin"></nav>
+
+<div class="container-fluid" style="width: 90%">
+    <div class="table table-responsive">
+        <table id="table_paciente" class="table caption-top">
+            <caption id="table_caption" class="fw-bold text-center text-primary" th:text="#{table_paciente.caption}"
+                     style="font-size: large"></caption>
+            <thead>
+            <tr class="text-center text-light bg-primary" style="font-size: small">
+                <th id="thcol0" scope="col" th:text="#{table_paciente.col0}"/>
+                <th id="thcol1" scope="col" th:text="#{table_paciente.col1}"/>
+                <th id="thcol2" scope="col" th:text="#{table_paciente.col2}"/>
+                <th id="thcol3" scope="col" th:text="#{table_paciente.col4}"/>
+                <th id="thcol4" scope="col" th:text="#{table_paciente.col5}"/>
+                <th id="thcol5" scope="col" th:text="#{table_paciente.col6}"/>
+                <th id="thcol6" scope="col" th:text="#{table_paciente.col7}"/>
+                <th id="thcol7" scope="col" th:text="#{table_paciente.col8}"/>
+                <th id="thcol8" scope="col" th:text="#{table_paciente.col9}"/>
+                <th id="thcol9" scope="col" th:text="#{table_paciente.col10}"/>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="result text-center" style="border-bottom: 2px solid #0d6efd; font-size: small"
+                data-th-each="paciente : ${pacientes}">
+                <td th:id="'td0' + ${pacienteStat.index}" th:text="${paciente.codAr}"/>
+                <td th:id="'td1' + ${pacienteStat.index}" th:text="${paciente.dni}"/>
+                <td th:id="'td2' + ${pacienteStat.index}" th:text="${paciente.nombreCompleto}"/>
+                <td th:id="'td3' + ${pacienteStat.index}" th:text="${paciente.telefono}"/>
+                <td th:id="'td4' + ${pacienteStat.index}" th:text="${paciente.domicilio}"/>
+                <td th:id="'td5' + ${pacienteStat.index}" th:text="${paciente.localidad}"/>
+                <td th:id="'td6' + ${pacienteStat.index}" th:text="${paciente.provincia}"/>
+                <td th:id="'td7' + ${pacienteStat.index}" th:text="${paciente.codPostal}"/>
+                <td th:id="'td8' + ${pacienteStat.index}" th:text="${paciente.nacionalidad}"/>
+                <td th:id="'td9' + ${pacienteStat.index}" th:text="${paciente.vacunado}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-evenly mb-5">
+        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="btn_modificar"
+                class="btn btn-primary rounded-0 px-5" th:text="#{boton.modificar}"/>
+        <button id="btn_borrar"
+                class="btn btn-primary rounded-0 px-5"
+                th:text="#{boton.borrar}" th:onclick="|eliminar()|"/>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Paciente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="requires-validation" id="form-register" novalidate accept-charset=utf-8
+                          method="post">
+                        <div>
+                            <!-- Grupo: DNI -->
+                            <div class="mb-5">
+                                <input class="form-control" type="text" id="dni" th:placeholder="#{register.ph.dni}"
+                                       pattern="[0-9]{8}[A-Za-z]{1}" required>
+                            </div>
+                            <!-- Grupo: Nombre -->
+                            <div class="mb-5">
+                                <input class="form-control" type="text" id="nombre"
+                                       th:placeholder="#{register.ph.nombre}"
+                                       pattern="[a-zA-ZÀ-ÿ ]{1,45}" required>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+
+                                    <!-- Grupo: Naciemiento -->
+                                    <div class="mb-5">
+                                        <input class="form-control" type="date" id="fecha"
+                                               th:placeholder="#{register.ph.fechaNacimiento}" required>
+                                    </div>
+                                </div>
+                                <div class="col">
+
+                                    <!-- Grupo: Telefono -->
+                                    <div class="mb-5">
+                                        <input class="form-control" type="text" id="telefono" pattern="[0-9]{9}"
+                                               th:placeholder="#{register.ph.telefono}" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Grupo: Domicilio -->
+                            <div class="mb-5">
+                                <input class="form-control" type="text" id="domicilio" pattern="[a-zA-ZÀ-ÿ0-9 /]{1,45}"
+                                       th:placeholder="#{register.ph.domicilio}" required>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <!-- Grupo: Localidad -->
+                                    <div class="mb-5">
+                                        <select id="localidad" class="form-select text-tema" required>
+                                            <option selected disabled th:text="#{register.ph.localidad}"
+                                                    value=""></option>
+                                            <option>Aniñon</option>
+                                            <option>Ariza</option>
+                                            <option>Brea</option>
+                                            <option>Calatayud</option>
+                                            <option>Daroca</option>
+                                            <option>Huesca</option>
+                                            <option>Maluenda</option>
+                                            <option>Miedes</option>
+                                            <option>Teruel</option>
+                                            <option>Zaragoza</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <!-- Grupo: Provincia -->
+                                    <div class="mb-5">
+                                        <select id="provincia" class="form-select text-tema" required>
+                                            <option selected disabled th:text="#{register.ph.provincia}"
+                                                    value=""></option>
+                                            <option>Huesca</option>
+                                            <option>Teruel</option>
+                                            <option>Zaragoza</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <!-- Grupo: CP -->
+                                    <div class="mb-5">
+                                        <input class="form-control" type="text" id="postal" pattern="[0-9]{5}"
+                                               th:placeholder="#{register.ph.cp}" required>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <!-- Grupo: Nacionalidad -->
+                                    <div class="mb-5">
+                                        <input class="form-control" type="text" id="nacionalidad"
+                                               pattern="[a-zA-ZÀ-ÿ]{1,45}" th:placeholder="#{register.ph.nacionalidad}"
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Grupo: Vacunado -->
+                            <div class="mb-4 form-check">
+                                <input type="checkbox" class="form-check-input" id="vacunado">
+                                <label class="form-check-label" for="vacunado"><span
+                                        class="fw-bold text-tema" th:text="#{register.ph.vacunado}"></span></label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="aceptar" class="btn btn-primary fw-bold" th:onclick="|modificar()|">
+                        Aceptar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.requires-validation')
+        Array.from(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+
+    var pacientes = [[${pacientes}]];
+
+    function hideIcon(self) {
+        self.style.backgroundImage = 'none';
+    }
+
+    function showIcon(self) {
+        self.style.backgroundImage = "url('/icons/search.svg')";
+    }
+
+    /*function marcar(data) {
+        for (let y = 0; y < data.length; y++) {
+            if (document.getElementById('td9' + y).innerText == true) {
+                for (var x = 0; x < 10; x++) {
+                    document.getElementById('td' + x + '' + y).style.background = '#85cedc';
+                }
+            }
+        }
+    }*/
+
+    $('#buscador').on('keyup', function () {
+        var value = $(this).val();
+        var data = filtrarTabla(value, pacientes);
+        refrescarTabla(data);
+    });
+
+    function filtrarTabla(value, data) {
+        var filteredData = [];
+        for (var i = 0; i < data.length; i++) {
+            value = value.toLowerCase();
+            var filteredDni = data[i].dni.toLowerCase();
+            var filteredNombre = data[i].nombreCompleto.toLowerCase();
+            var filteredTelefono = data[i].telefono.toLowerCase();
+            var filteredDomicilio = data[i].domicilio.toLowerCase();
+            var filteredLocalidad = data[i].localidad.toLowerCase();
+            var filteredProvincia = data[i].provincia.toLowerCase();
+            var filteredCodPostal = data[i].codPostal.toLowerCase();
+            var filteredNacionalidad = data[i].nacionalidad.toLowerCase();
+            var filteredVacunado = data[i].vacunado + "";
+
+
+            if (filteredDni.includes(value) || filteredNombre.includes(value) ||
+                filteredTelefono.includes(value) || filteredDomicilio.includes(value) || filteredLocalidad.includes(value) ||
+                filteredProvincia.includes(value) || filteredCodPostal.includes(value) || filteredNacionalidad.includes(value) ||
+                filteredVacunado.includes(value)) {
+                filteredData.push(data[i]);
+            }
+        }
+        return filteredData;
+    }
+
+    function refrescarTabla(data) {
+
+        var table = document.getElementById("table_paciente");
+        var caption = document.getElementById("table_caption").innerText;
+
+        var header = [];
+        for (var i = 0; i < table.rows[0].cells.length; i++) {
+            var headerCol = document.getElementById("thcol" + (i)).innerText;
+            header.push(headerCol);
+        }
+
+        table.innerHTML = '';
+        var cabecera = `<caption id="table_caption" class="fw-bold text-center text-primary"
+                     style="font-size: large">${caption}</caption>
+                <thead>
+                <tr class="text-center text-light bg-primary" style="font-size: small">
+                    <th id="thcol0" scope="col">${header[0]}</th>
+                    <th id="thcol1" scope="col">${header[1]}</th>
+                    <th id="thcol2" scope="col">${header[2]}</th>
+                    <th id="thcol3" scope="col">${header[3]}</th>
+                    <th id="thcol4" scope="col">${header[4]}</th>
+                    <th id="thcol5" scope="col">${header[5]}</th>
+                    <th id="thcol6" scope="col">${header[6]}</th>
+                    <th id="thcol7" scope="col">${header[7]}</th>
+                    <th id="thcol8" scope="col">${header[8]}</th>
+                    <th id="thcol9" scope="col">${header[9]}</th>
+
+                 </tr>
+                </thead>`
+        table.innerHTML = cabecera;
+
+        if ($('#buscador').val() != '') {
+            for (var i = 0; i < data.length; i++) {
+                var row = `
+                <tbody>
+                <tr class="result text-center" style="border-bottom: 2px solid #0d6efd; font-size: small">
+                            <td>${data[i].codAr}</td>
+                            <td>${data[i].dni}</td>
+                            <td>${data[i].nombreCompleto}</td>
+                            <td>${data[i].telefono}</td>
+                            <td>${data[i].domicilio}</td>
+                            <td>${data[i].localidad}</td>
+                            <td>${data[i].provincia}</td>
+                            <td>${data[i].codPostal}</td>
+                            <td>${data[i].nacionalidad}</td>
+                            <td>${data[i].vacunado}</td>
+                       </tr>
+                </tbody>`
+                table.innerHTML += row;
+            }
+        } else {
+            for (var i = 0; i < pacientes.length; i++) {
+                var row = `
+                <tbody>
+                <tr class="result text-center" style="border-bottom: 2px solid #0d6efd; font-size: small">
+                            <td>${pacientes[i].codAr}</td>
+                            <td>${pacientes[i].dni}</td>
+                            <td>${pacientes[i].nombreCompleto}</td>
+                            <td>${pacientes[i].telefono}</td>
+                            <td>${pacientes[i].domicilio}</td>
+                            <td>${pacientes[i].localidad}</td>
+                            <td>${pacientes[i].provincia}</td>
+                            <td>${pacientes[i].codPostal}</td>
+                            <td>${pacientes[i].nacionalidad}</td>
+                            <td>${pacientes[i].vacunado}</td>
+                       </tr>
+                </tbody>`
+                table.innerHTML += row;
+            }
+        }
+    }
+
+    /*----------------------------------------------------*/
+
+    $(function () {
+        $('tr').click(function (e) {
+            if ($(this).hasClass('selected')) {
+                cleanTr();
+            } else {
+                cleanTr()
+                $(this).addClass('selected')
+            }
+        })
+
+        function cleanTr() {
+            $('.selected').each(function (index, element) {
+                $(element).removeClass('selected')
+            })
+        }
+    })
+
+    /*---------------------------------------------*/
+
+    var table = document.getElementById("table_paciente");
+
+    function codArSeleccionado(data) {
+        var paciente;
+        var codAr;
+        var id = "td0" + $(".selected").index();
+        codAr = document.getElementById(id).innerText;
+        for (var i = 0; i < data.length; i++) {
+            if (codAr == data[i].codAr) {
+                paciente = data[i];
+            }
+        }
+        return codAr;
+    }
+
+    function pacienteSeleccionado(data) {
+        var paciente;
+        var codAr;
+        var id = "td0" + $(".selected").index();
+        codAr = document.getElementById(id).innerText;
+        for (var i = 0; i < data.length; i++) {
+            if (codAr == data[i].codAr) {
+                paciente = data[i];
+            }
+        }
+        return paciente;
+    }
+
+    function eliminar() {
+        if (document.getElementById("td0" + $(".selected").index()) != null) {
+            $.ajax({
+                type: 'Delete',
+                contentType: 'application/json; charset=ISO-8859-1',
+                url: "/salud/api/paciente/delete=" + codArSeleccionado(pacientes),
+                dataType: 'json',
+                async: true,
+                complete: function () {
+                    setTimeout(1000);
+                    location.reload();
+                },
+            });
+        } else {
+            alert("Seleccione un elemento de la tabla");
+        }
+    }
+
+    /*--------------------------------------*/
+
+    var direccion = new String();
+
+    function getData() {
+        var data = []
+        var ar = codArSeleccionado(pacientes);
+        var dni = document.getElementById("dni").value;
+        var nombre = document.getElementById("nombre").value;
+        var fecha = document.getElementById("fecha").value;
+        var telefono = document.getElementById("telefono").value;
+        var domicilio = document.getElementById("domicilio").value;
+        var localidad = document.getElementById("localidad").value;
+        var provincia = document.getElementById("provincia").value;
+        var postal = document.getElementById("postal").value;
+        var nacionalidad = document.getElementById("nacionalidad").value;
+        var checkbox = document.getElementById("vacunado");
+        var checked = checkbox.checked;
+        if (checked) {
+            document.getElementById("vacunado").value = true;
+        } else {
+            document.getElementById("vacunado").value = false;
+        }
+        var vacunado = document.getElementById("vacunado").value;
+        data.push(ar, dni, nombre, fecha, telefono, domicilio, localidad, provincia, postal, nacionalidad, vacunado);
+        return data;
+    }
+
+
+    function validarIsEmpty(data) {
+        for (var i = 0; i < data.length; i++) {
+            if (data[i] == "") {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function buildURL(data, url) {
+        url = "http://localhost:8086/salud/api/paciente/update=" + data[0];
+        for (var i = 1; i < data.length; i++) {
+            url += "," + data[i];
+        }
+        return url;
+    }
+
+    function modificar() {
+        var data = getData();
+        direccion = buildURL(data, "");
+        if (document.getElementById("td0" + $(".selected").index()) != null) {
+            if (validarIsEmpty(data)) {
+                $.ajax({
+                    type: '',
+                    contentType: 'application/json; charset=ISO-8859-1',
+                    url: direccion,
+                    dataType: 'json',
+                    async: true,
+                    complete: function () {
+                        setTimeout(1000);
+                        location.reload();
+                    },
+                });
+            } else {
+                alert("Rellene todos los campos")
+            }
+        } else {
+            alert("Seleccione un elemento de la tabla");
+        }
+    }
+
+</script>
+</body>
+</html>
+

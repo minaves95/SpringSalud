@@ -1,0 +1,79 @@
+
+<!-- NAVBAR -->
+<nav th:fragment="navbar_admin" class="navbar navbar-expand-sm py-0" style="background-color: #0d6efd; min-height: 40.8px">
+    <div class="container-fluid px-0">
+        <div class="collapse navbar-collapse">
+            <a class="p-0" th:href="@{/salud/17460474R/index}">
+                <img src="../../img/logo.png" th:src="@{/img/logo.png}"
+                     style="height: 36.85px; width: auto">
+            </a>
+            <div class="text-light align-self-center ps-3 d-none d-lg-inline fw-bold"
+                 style="font-size: large; font-family: 'Comic Sans MS'"
+                 th:text="#{nav.brand}"></div>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <div class="separador px-1"/>
+                    <a class="nav-link dropdown-toggle text-light rounded-0" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="pb-1" src="../../icons/layout-text-window-reverse.svg"
+                             th:src="@{/icons/layout-text-window-reverse.svg}">
+                    </a>
+                    <ul class="dropdown-menu text-center" aria-labelledby="navbarDropdown" style="background:#cfe2ff">
+                        <li>
+                            <a class="dropdown-item text-light" th:href="@{/salud/paciente/visualizar}">
+                                <span style="color:#0002a8" th:text="#{nav.dropitem.paciente}"></span>
+                            </a>
+                        </li>
+                        <hr class="dropdown-divider">
+                        <li><a class="dropdown-item text-light" th:href="@{/salud/medico/visualizar}"><span
+                                style="color:#0002a8"
+                                th:text="#{nav.dropitem.medico}"></span></a>
+                        </li>
+                        <hr class="dropdown-divider">
+                        <li><a class="dropdown-item text-light" th:href="@{/salud/centro/visualizar}"><span
+                                style="color:#0002a8" th:text="#{nav.dropitem.centro}"></span></a></li>
+                        <hr class="dropdown-divider">
+                        <li><a class="dropdown-item text-light" th:href="@{/salud/cita/visualizar}"><span
+                                style="color:#0002a8"
+                                th:text="#{nav.dropitem.cita}"></span></a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <div class="separador px-1"/>
+                    <a id="nav_logout" th:href="@{/salud/login}"
+                       class="btn rounded-0 text-light btn-sm" style="font-size:large">
+                        <img class="pb-1" src="../../icons/arrow-down-right-circle-fill.svg"
+                             th:src="@{/icons/arrow-down-right-circle-fill.svg}">
+                        <span class="d-none d-lg-inline" th:text="#{nav.logout}"></span>
+                    </a>
+                </li>
+                <form class="d-flex">
+                    <div class="separador px-1"/>
+                    <input id="buscador" class="form-control rounded-0 py-0 separador" type="search"
+                           onfocusin="hideIcon(this);" onfocusout="showIcon(this)"
+                           th:style="'background-image:url(' + @{/icons/search.svg} + ');' +
+                           'background-repeat: no-repeat;  background-position: 10px 10px;'">
+                </form>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--<li class="nav-item">
+    <div class="separador px-1"/>
+    <a id="nav_login" th:href="@{/salud/login}"
+       class="btn rounded-0 text-light btn-sm" style="font-size:large">
+        <img class="pb-1" src="../../icons/arrow-down-right-circle-fill.svg"
+             th:src="@{/icons/arrow-down-right-circle-fill.svg}">
+        <span class="d-none d-lg-inline" th:text="#{nav.login}"></span>
+    </a>
+</li>
+<li class="nav-item">
+    <div class="separador px-1"/>
+    <a id="nav_register" th:href="@{/salud/register}" class="btn rounded-0 text-light btn-sm"
+       style="font-size:large">
+        <img class="pb-1" src="../../icons/file-earmark-text-fill.svg"
+             th:src="@{/icons/file-earmark-text-fill.svg}">
+        <span class="d-none d-lg-inline" th:text="#{nav.register}"></span>
+    </a>
+</li>-->

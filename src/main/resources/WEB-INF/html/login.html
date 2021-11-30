@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/bootstrap.css" type="text/css" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link type="text/css" href="../css/form.css" th:href="@{/css/form.css}" rel="stylesheet">
+    <link rel="shortcut icon" href="#">
+</head>
+<body>
+<div class="container w-75 mt-5 rounded shadow bg-primary">
+    <div class="row align-items-lg-stretch">
+        <div class="col rounded-start d-none d-lg-block col-md-5 col-lg-5 col-xl-6"
+             th:style="'background:url(' + @{/img/login_page.jpg} + '); background-position: center center;'">
+        </div>
+        <div class="col p-5 rounded-end bg-white">
+            <div class="text-tema text-center">
+                <h3 class="fw-bold"><img class="float-lg-none" th:src="@{/img/logoSS.png}" alt="SS" width="24">eguridad
+                    <img class="float-lg-none" th:src="@{/img/logoSS.png}" alt="SS" width="24">ocial </h3>
+            </div>
+
+            <form class="requires-validation" id="form-login" novalidate accept-charset=utf-8>
+                <div class="mt-5">
+                    <div class="mb-5">
+                        <input class="form-control" type="number" min="1" id="ar" th:placeholder="#{login.ph.ar}"
+                               required>
+                        <div class="float-start valid-feedback" th:text="#{login.valid.ar}"/>
+                        <div class="float-start invalid-feedback" th:text="#{login.invalid.ar}"/>
+                    </div>
+
+                    <div class="mb-5">
+                        <input class="form-control" type="text" id="dni" th:placeholder="#{login.ph.dni}"
+                               pattern="[0-9]{8}[A-Za-z]{1}" required>
+                        <div class="float-start valid-feedback" th:text="#{login.valid.dni}"/>
+                        <div class="float-start invalid-feedback" th:text="#{login.invalid.dni}"/>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <input class="form-control" type="text" id="telefono" pattern="[0-9]{9}"
+                           th:placeholder="#{login.ph.telefono}"
+                           required>
+                    <div class="float-start valid-feedback" th:text="#{register.valid.telefono}"/>
+                    <div class="float-start invalid-feedback" th:text="#{register.invalid.telefono}"/>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="my-2">
+                                <span class="text-tema">¿No tienes cuenta?&nbsp;&nbsp; <a
+                                        href="register" style="text-decoration: none" class="fw-bold"><p>&nbsp;Regístrate</p></a></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-button d-grid rounded">
+                            <button th:onclick="|comprobar()|" type="submit" id="login-button" class="btn fw-bold text-white"
+                                    th:text="#{login.boton.login}">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.requires-validation')
+        Array.from(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+
+    function getData() {
+        var data = [];
+        var ar = document.getElementById('ar').value;
+        var dni = document.getElementById('dni').value;
+        var telefono = document.getElementById('telefono').value;
+        data.push(ar, dni, telefono);
+        return data;
+    }
+
+    function validarIsEmpty(data) {
+        for (var i = 0; i < data.length; i++) {
+            if (data[i] == "") {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function comprobar() {
+        if (validarIsEmpty(getData())) {
+            $.ajax({
+                type: 'GET',
+                contentType: 'application/json; charset=ISO-8859-1',
+                url: "/salud/api/paciente/comprobarPaciente",
+                data: {
+                    codAr: getData()[0],
+                    dni:  getData()[1],
+                    telefono: getData()[2]
+                },
+                dataType: 'json',
+                async: true,
+                success: function (data) {
+                    if (data == false) {
+                        alert("Comprueba que los datos introducidos sean correctos");
+                        window.location.href = "http://localhost:8086/salud/login";
+                    } else {
+                        window.location.href = "http://localhost:8086/salud/" +  getData()[1] + "/index"
+                    }
+                },
+                error: function () {
+                    alert("Ha ocurrido un error al iniciar sesión, inténtelo de nuevo");
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

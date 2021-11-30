@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/bootstrap.css" type="text/css" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link type="text/css" href="../css/calendario.css" th:href="@{/css/calendario.css}" rel="stylesheet">
+    <link rel="shortcut icon" href="#">
+</head>
+<style>
+    .separador {
+        border-left: 2px solid white;
+        height: 100%;
+    }
+</style>
+<body th:style="'background:url(' + @{/img/index_page.png} + '); background-size: cover; position: relative; width: 100%; height: 100%;'">
+
+<!-- NAVBAR -->
+<nav>
+    <th:block th:if="${user eq admin}" th:insert="fragments/navigation_admin.html :: navbar_admin"></th:block>
+    <th:block th:unless="${user eq admin}" th:insert="fragments/navigation.html :: navbar"></th:block>
+</nav>
+
+<div class="container-fluid w-100 p-5 d-flex d-inline-flex justify-content-between">
+    <div>
+        <div th:insert="fragments/news.html :: news"></div>
+    </div>
+    <div>
+        <div th:insert="fragments/miscitas.html :: miscitas"></div>
+    </div>
+    <div>
+        <div class="ms-auto" id="calendar" style="width: 420px; height: 570px; background-color: #2a7cf8;">
+        </div>
+    </div>
+</div>
+    <script type="text/javascript" src="../js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" src="../js/moment.min.js" th:src="@{/js/moment.min.js}"></script>
+    <script type="text/javascript" src="../js/calendario.js" th:src="@{/js/calendario.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+        function hideIcon(self) {
+            self.style.backgroundImage = 'none';
+        }
+
+        function showIcon(self) {
+            self.style.backgroundImage = "url('/icons/search.svg')";
+        }
+
+        var miscitas =  [[${miscitas}]];
+        var user =[[${user}]];
+
+        if(miscitas.length == 0){
+           var table = document.getElementById("mis_citas");
+           table.innerHTML = ''
+            var cabecera = `<caption id="table_caption" class="fw-bold text-center text-white"
+                         style="font-size: large; background-color: #0d6efd; min-width: 234px">Mis citas</caption>`;
+            table.innerHTML = cabecera;
+            var row = `
+                <tbody>
+                <tr class="text-center" style="border-bottom: 2px solid #0d6efd; border-right: 2px solid #0d6efd; border-left: 2px solid #0d6efd; min-width: 234px">
+                    <td>No tiene citas</td>
+                </tr>
+                </tbody>`
+            table.innerHTML += row;
+        }
+
+        /*for (var i = 0; i < miscitas.length; i++) {
+            var fecha = miscitas[i].fechaCita;
+            $("#cita" + i).on("click", function () {
+                window.location.href = "http://localhost:8086/salud/" + user + "/" + fecha;
+            });
+        }*/
+
+    </script>
+</body>
+</html>
+

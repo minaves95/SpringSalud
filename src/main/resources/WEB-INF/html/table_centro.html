@@ -1,0 +1,162 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/bootstrap.css" type="text/css" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="shortcut icon" href="#">
+</head>
+<style>
+    .separador {
+        border-left: 2px solid white;
+        height: 100%;
+    }
+</style>
+<body>
+
+<!-- NAVBAR -->
+<nav th:insert="fragments/navigation_admin.html :: navbar_admin"></nav>
+
+<div class="container-fluid" style="width: 90%">
+    <div class="table table-responsive">
+        <table id="table_centro" class="table caption-top">
+            <caption id="table_caption" class="fw-bold text-center text-primary" th:text="#{table_centros.caption}"
+                     style="font-size: large"></caption>
+            <thead>
+            <tr class="text-center text-light bg-primary" style="font-size: small">
+                <th id="thcol0" scope="col" th:text="#{table_centro.col0}"/>
+                <th id="thcol1" scope="col" th:text="#{table_centro.col1}"/>
+                <th id="thcol2" scope="col" th:text="#{table_centro.col2}"/>
+                <th id="thcol3" scope="col" th:text="#{table_centro.col3}"/>
+                <th id="thcol4" scope="col" th:text="#{table_centro.col4}"/>
+                <th id="thcol5" scope="col" th:text="#{table_centro.col5}"/>
+                <th id="thcol6" scope="col" th:text="#{table_centro.col6}"/>
+                <th id="thcol7" scope="col" th:text="#{table_centro.col7}"/>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="result text-center" style="border-bottom: 2px solid #0d6efd; font-size: small"
+                data-th-each="centro : ${centros}">
+                <td th:text="${centro.codCentro}"/>
+                <td th:text="${centro.nombreCentro}"/>
+                <td th:text="${centro.direccion}"/>
+                <td th:text="${centro.localidad}"/>
+                <td th:text="${centro.provincia}"/>
+                <td th:text="${centro.codPostal}"/>
+                <td th:text="${centro.horario}"/>
+                <td th:text="${centro.telefonoCentro}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="../js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+
+    var centros = [[${centros}]];
+
+    function hideIcon(self) {
+        self.style.backgroundImage = 'none';
+    }
+    function showIcon(self) {
+        self.style.backgroundImage = "url('/icons/search.svg')";
+    }
+
+    $('#buscador').on('keyup', function () {
+        var value = $(this).val();
+        var data = filtrarTabla(value, centros);
+        refrescarTabla(data);
+    });
+    function filtrarTabla(value, data) {
+        var filteredData = [];
+        for (var i = 0; i < data.length; i++) {
+            value = value.toLowerCase();
+            var filteredNombre = data[i].nombreCentro.toLowerCase();
+            var filteredDireccion = data[i].direccion.toLowerCase();
+            var filteredLocalidad = data[i].localidad.toLowerCase();
+            var filteredProvincia = data[i].provincia.toLowerCase();
+            var filteredCodPostal = data[i].codPostal.toLowerCase();
+            var filteredDireccion = data[i].direccion.toLowerCase();
+            var filteredHorario= data[i].horario.toLowerCase();
+            var filteredTelefono = data[i].telefonoCentro.toLowerCase();
+
+            if (filteredNombre.includes(value) || filteredDireccion.includes(value) || filteredLocalidad.includes(value) ||
+                filteredProvincia.includes(value) || filteredCodPostal.includes(value) || filteredDireccion.includes(value) ||
+                filteredHorario.includes(value) || filteredTelefono.includes(value)) {
+                filteredData.push(data[i]);
+            }
+        }
+        return filteredData;
+    }
+    function refrescarTabla(data) {
+
+        var table = document.getElementById("table_centro");
+        var caption = document.getElementById("table_caption").innerText;
+
+        var header = [];
+        for (var i = 0; i < table.rows[0].cells.length; i++) {
+            var headerCol = document.getElementById("thcol" + (i)).innerText;
+            header.push(headerCol);
+        }
+
+        table.innerHTML = ''
+        var cabecera = `<caption id="table_caption" class="fw-bold text-center text-primary"
+                     style="font-size: large">${caption}</caption>
+                <thead>
+                <tr class="text-center text-light bg-primary" style="font-size: small">
+                    <th id="thcol0" scope="col">${header[0]}</th>
+                    <th id="thcol1" scope="col">${header[1]}</th>
+                    <th id="thcol2" scope="col">${header[2]}</th>
+                    <th id="thcol3" scope="col">${header[3]}</th>
+                    <th id="thcol4" scope="col">${header[4]}</th>
+                    <th id="thcol5" scope="col">${header[5]}</th>
+                    <th id="thcol6" scope="col">${header[6]}</th>
+                    <th id="thcol7" scope="col">${header[7]}</th>
+                 </tr>
+                </thead>`
+        table.innerHTML = cabecera;
+
+        if ($('#buscador').val() != '') {
+            for (var i = 0; i < data.length; i++) {
+                var row = `
+                <tbody>
+                <tr class="result text-center" style="border-bottom: 2px solid #0d6efd; font-size: small">
+                            <td>${data[i].codCentro}</td>
+                            <td>${data[i].nombreCentro}</td>
+                            <td>${data[i].direccion}</td>
+                            <td>${data[i].localidad}</td>
+                            <td>${data[i].provincia}</td>
+                            <td>${data[i].codPostal}</td>
+                            <td>${data[i].horario}</td>
+                            <td>${data[i].telefonoCentro}</td>
+                       </tr>
+                </tbody>`
+                table.innerHTML += row;
+            }
+        }
+        else{
+            for (var i = 0; i < centros.length; i++) {
+                var row = `
+                <tbody>
+                <tr class="result text-center" style="border-bottom: 2px solid #0d6efd; font-size: small">
+                            <td>${centros[i].codCentro}</td>
+                            <td>${centros[i].nombreCentro}</td>
+                            <td>${centros[i].direccion}</td>
+                            <td>${centros[i].localidad}</td>
+                            <td>${centros[i].provincia}</td>
+                            <td>${centros[i].codPostal}</td>
+                            <td>${centros[i].horario}</td>
+                            <td>${centros[i].telefonoCentro}</td>
+                       </tr>
+                </tbody>`
+                table.innerHTML += row;
+            }
+        }
+    }
+
+</script>
+</body>
+</html>
+

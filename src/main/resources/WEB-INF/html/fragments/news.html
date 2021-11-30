@@ -1,0 +1,64 @@
+<body th:fragment="news" onLoad="scrollStart()">
+<div class="text-center" onMouseover="scrollspeed=0" onMouseout="scrollspeed=current"
+     style=" width: 200px;
+            height: 300px;
+            overflow: hidden;
+            border: 2px solid #0d6efd;
+            font-family: Arial;
+            font-size: 0.8em;">
+    <div style="background-color: #0d6efd;
+            color: #fff;
+            padding: 5px;
+            z-index: 1;
+            font-weight: bold;
+            text-align: center;">Enlaces de interés
+    </div>
+    <div id="scroll" style=" background-color: rgba(195,234,255,0.44);
+            position: relative;
+            width: auto;
+            margin: 1px;
+            z-index: -1;
+            padding: 5px;">
+        <div style="font-weight: bold;
+            margin-top: 20px;">1 - Noticia
+        </div>
+        <div>Información salud</div>
+        <a href="https://www.saludinforma.es" style="text-decoration: none" target="_blank">Salud Informa</a>
+
+        <div style="font-weight: bold;
+            margin-top: 20px;">2 - Noticia
+        </div>
+        <div>Información médica</div>
+        <a href="https://medlineplus.gov/spanish" style="text-decoration: none" target="_blank">Medlineplus</a>
+
+        <div style="font-weight: bold; margin-top: 20px;">3 - Noticia</div>
+        <div>Instituto de Calatayud</div>
+        <a href="https://emiliojimeno.edu.es" style="text-decoration: none" target="_blank">IES Emilio Jimeno</a>
+    </div>
+</div>
+<script type="text/javascript">
+    var scrollspeed = 1;
+    var speedjump = 30;
+    var startdelay = 1;
+    var topspace = -10;
+    var frameheight = 270;
+    current = scrollspeed;
+
+    function scrollStart() {
+        dataobj = document.getElementById("scroll");
+        alturaNoticias = dataobj.offsetHeight;
+        dataobj.style.top = topspace + 'px';
+        setTimeout("scrolling()", (startdelay * 1000));
+    }
+
+    function scrolling() {
+        dataobj.style.top = parseInt(dataobj.style.top) - scrollspeed + 'px';
+        if (parseInt(dataobj.style.top) < alturaNoticias * (-1)) {
+            dataobj.style.top = frameheight + 'px';
+            setTimeout("scrolling()", 0);
+        } else {
+            setTimeout("scrolling()", speedjump);
+        }
+    }
+</script>
+</body>

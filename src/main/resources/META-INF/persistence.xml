@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+    <persistence-unit name="default" >
+        <mapping-file>META-INF/mapping_files/Centro.xml</mapping-file>
+        <mapping-file>META-INF/mapping_files/Paciente.xml</mapping-file>
+        <mapping-file>META-INF/mapping_files/Medico.xml</mapping-file>
+        <mapping-file>META-INF/mapping_files/Cita.xml</mapping-file>
+
+        <class>com.salud.model.Centro</class>
+        <class>com.salud.model.Paciente</class>
+        <class>com.salud.model.Medico</class>
+        <class>com.salud.model.Cita</class>
+        <properties>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/salud"/>
+            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+        <!-- <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+        <property name="javax.persistence.jdbc.user" value="sa"/>
+        <property name="javax.persistence.jdbc.password" value=""/>
+        <property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/test"/>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+        <property name="hibernate.show_sql" value="true" />
+        <property name="hibernate.format_sql" value="true" />
+        <property name="hibernate.use_sql_comments" value="true" />
+        <property name="hibernate.hbm2ddl.auto" value="validate" />-->
+        </properties>
+    </persistence-unit>
+</persistence>

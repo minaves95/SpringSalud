@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+                 version="3.0">
+
+    <entity class="com.salud.model.Centro">
+        <table name="centro" schema="salud" catalog=""/>
+        <attributes>
+            <id name="codCentro">
+                <column name="cod_centro" precision="-1"/>
+            </id>
+            <basic name="nombreCentro">
+                <column name="nombre_centro" nullable="false" length="45"/>
+            </basic>
+            <basic name="direccion">
+                <column name="direccion" nullable="false" length="45"/>
+            </basic>
+            <basic name="localidad">
+                <column name="localidad" nullable="false" length="45"/>
+            </basic>
+            <basic name="provincia">
+                <column name="provincia" nullable="false" length="45"/>
+            </basic>
+            <basic name="codPostal">
+                <column name="cod_postal" nullable="false" length="5"/>
+            </basic>
+            <basic name="horario">
+                <column name="horario" nullable="false" length="45"/>
+            </basic>
+            <basic name="telefonoCentro">
+                <column name="telefono_centro" nullable="false" length="9"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

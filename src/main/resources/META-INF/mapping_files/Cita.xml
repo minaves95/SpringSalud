@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+                 version="3.0">
+
+    <entity class="com.salud.model.Cita">
+        <table name="cita" schema="salud" catalog=""/>
+        <attributes>
+            <id name="codCita">
+                <column name="cod_cita" precision="-1"/>
+            </id>
+            <basic name="fechaCita">
+                <column name="fecha_cita"/>
+            </basic>
+            <basic name="causa">
+                <column name="causa" nullable="false" length="45"/>
+            </basic>
+            <basic name="tipo">
+                <column name="tipo" nullable="false" length="45"/>
+            </basic>
+            <many-to-one name="paciente">
+                <join-column name="cod_ar"/>
+            </many-to-one>
+            <many-to-one name="medico">
+                <join-column name="cod_medico"/>
+            </many-to-one>
+
+        </attributes>
+    </entity>
+</entity-mappings>

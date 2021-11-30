@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="../css/bootstrap.css" type="text/css" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link type="text/css" href="../css/form.css" th:href="@{/css/form.css}" rel="stylesheet">
+    <link rel="shortcut icon" href="#">
+</head>
+<body>
+<main>
+    <div class="container w-75 mt-5 mb-5 rounded shadow bg-primary">
+        <div class="row align-items-lg-stretch">
+            <div class="col rounded-start d-none d-lg-block col-md-5 col-lg-5 col-xl-6"
+                 th:style="'background:url(' + @{/img/register_page.png} + '); background-position: center center;'">
+
+            </div>
+            <div class="col p-5 rounded-end bg-white">
+                <div class="text-tema text-center">
+                    <h3 class="fw-bold"><img class="float-lg-none" th:src="@{/img/logoSS.png}" alt="SS" width="24">eguridad
+                        <img class="float-lg-none" th:src="@{/img/logoSS.png}" alt="SS" width="24">ocial </h3>
+                </div>
+
+                <form class="requires-validation" id="form-register" novalidate accept-charset=utf-8 method="post">
+                    <div class="mt-5">
+
+                        <!-- Grupo: DNI -->
+                        <div class="mb-5">
+                            <input class="form-control" type="text" id="dni" th:placeholder="#{register.ph.dni}"
+                                   pattern="[0-9]{8}[A-Za-z]{1}" required>
+                            <div class="float-start valid-feedback" th:text="#{register.valid.dni}"/>
+                            <div class="float-start invalid-feedback" th:text="#{register.invalid.dni}"/>
+                        </div>
+
+                        <!-- Grupo: Nombre -->
+                        <div class="mb-5">
+                            <input class="form-control" type="text" id="nombre" th:placeholder="#{register.ph.nombre}"
+                                   pattern="[a-zA-ZÀ-ÿ ]{1,45}" required>
+                            <div class="float-start valid-feedback" th:text="#{register.valid.nombre}"/>
+                            <div class="float-start invalid-feedback" th:text="#{register.invalid.nombre}"/>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+
+                                <!-- Grupo: Naciemiento -->
+                                <div class="mb-5">
+                                    <input class="form-control" type="date" id="fecha"
+                                           th:placeholder="#{register.ph.fechaNacimiento}" required>
+                                    <div class="float-start valid-feedback" th:text="#{register.valid.fecha}"/>
+                                    <div class="float-start invalid-feedback" th:text="#{register.invalid.fecha}"/>
+                                </div>
+                            </div>
+                            <div class="col">
+
+                                <!-- Grupo: Telefono -->
+                                <div class="mb-5">
+                                    <input class="form-control" type="text" id="telefono" pattern="[0-9]{9}"
+                                           th:placeholder="#{register.ph.telefono}" required>
+                                    <div class="float-start valid-feedback" th:text="#{register.valid.telefono}"/>
+                                    <div class="float-start invalid-feedback" th:text="#{register.invalid.telefono}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grupo: Domicilio -->
+                        <div class="mb-5">
+                            <input class="form-control" type="text" id="domicilio" pattern="[a-zA-ZÀ-ÿ0-9 /]{1,45}"
+                                   th:placeholder="#{register.ph.domicilio}" required>
+                            <div class="float-start valid-feedback" th:text="#{register.valid.domicilio}"/>
+                            <div id="invalid_domicilio" class="float-start invalid-feedback"
+                                 th:text="#{register.invalid.domicilio}"/>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+
+                                <!-- Grupo: Localidad -->
+                                <div class="mb-5">
+                                    <select id="localidad" class="form-select text-tema" required>
+                                        <option selected disabled th:text="#{register.ph.localidad}" value=""></option>
+                                        <option>Aniñon</option>
+                                        <option>Ariza</option>
+                                        <option>Brea</option>
+                                        <option>Calatayud</option>
+                                        <option>Daroca</option>
+                                        <option>Huesca</option>
+                                        <option>Maluenda</option>
+                                        <option>Miedes</option>
+                                        <option>Teruel</option>
+                                        <option>Zaragoza</option>
+                                    </select>
+                                    <div class="float-start valid-feedback" th:text="#{register.valid.localidad}"/>
+                                    <div class="float-start invalid-feedback" th:text="#{register.invalid.localidad}"/>
+                                </div>
+
+                            </div>
+                            <div class="col">
+
+                                <!-- Grupo: Provincia -->
+                                <div class="mb-5">
+                                    <select id="provincia" class="form-select text-tema" required>
+                                        <option selected disabled th:text="#{register.ph.provincia}" value=""></option>
+                                        <option>Huesca</option>
+                                        <option>Teruel</option>
+                                        <option>Zaragoza</option>
+                                    </select>
+                                    <div class="float-start valid-feedback" th:text="#{register.valid.provincia}"/>
+                                    <div class="float-start invalid-feedback" th:text="#{register.invalid.provincia}"/>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <!-- Grupo: CP -->
+                                <div class="mb-5">
+                                    <input class="form-control" type="text" id="postal" pattern="[0-9]{5}"
+                                           th:placeholder="#{register.ph.cp}" required>
+                                    <div class="float-start valid-feedback" th:text="#{register.valid.cp}"/>
+                                    <div class="float-start invalid-feedback" th:text="#{register.invalid.cp}"/>
+                                </div>
+                            </div>
+                            <div class="col">
+
+                                <!-- Grupo: Nacionalidad -->
+                                <div class="mb-5">
+                                    <input class="form-control" type="text" id="nacionalidad"
+                                           pattern="[a-zA-ZÀ-ÿ]{1,45}" th:placeholder="#{register.ph.nacionalidad}"
+                                           required>
+                                    <div class="float-start valid-feedback" th:text="#{register.valid.nacionalidad}"/>
+                                    <div class="float-start invalid-feedback"
+                                         th:text="#{register.invalid.nacionalidad}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grupo: Vacunado -->
+                        <div class="mb-4 form-check">
+                            <input type="checkbox" class="form-check-input" id="vacunado">
+                            <label class="form-check-label" for="vacunado"><span
+                                    class="fw-bold text-tema" th:text="#{register.ph.vacunado}"></span></label>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="my-2">
+                                    <span class="text-tema">¿Ya tienes cuenta?&nbsp;&nbsp; <a
+                                            href="login" style="text-decoration: none" class="fw-bold"><p>Iniciar sesión</p></a></span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-button d-grid rounded">
+                                    <button type="submit" id="register-button" class="btn fw-bold text-white"
+                                            th:text="#{register.boton.register}">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript" src="../js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.requires-validation')
+        Array.from(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+
+    /*------------------------------------------------------------*/
+
+    var direccion = new String();
+
+    function getData() {
+        var data = []
+        var dni = document.getElementById("dni").value;
+        var nombre = document.getElementById("nombre").value;
+        var fecha = document.getElementById("fecha").value;
+        var telefono = document.getElementById("telefono").value;
+        var domicilio = document.getElementById("domicilio").value;
+        /*for(var i = 0; i < domicilio.length; i++){
+            if(domicilio.charAt(1) == "/"){
+                domicilio = domicilio.replace("/", "%2F");
+            }
+        }*/
+        var localidad = document.getElementById("localidad").value;
+        var provincia = document.getElementById("provincia").value;
+        var postal = document.getElementById("postal").value;
+        var nacionalidad = document.getElementById("nacionalidad").value;
+        var checkbox = document.getElementById("vacunado");
+        var checked = checkbox.checked;
+        if (checked) {
+            document.getElementById("vacunado").value = true;
+        } else {
+            document.getElementById("vacunado").value = false;
+        }
+        var vacunado = document.getElementById("vacunado").value;
+        data.push(dni, nombre, fecha, telefono, domicilio, localidad, provincia, postal, nacionalidad, vacunado);
+        return data;
+    }
+
+    function validarIsEmpty(data) {
+        for (var i = 0; i < data.length; i++) {
+            if (data[i] == "") {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function buildURL(data, url) {
+        url = "http://localhost:8086/salud/api/paciente/insert=" + data[0];
+        for (var i = 1; i < data.length; i++) {
+            url += "," + data[i];
+        }
+        return url;
+    }
+
+    $("#register-button").on("click", function () {
+        if (validarIsEmpty(getData())) {
+            direccion = buildURL(getData(), "");
+            $.ajax({
+                type: 'POST',
+                url: direccion,
+                success:
+                    window.location.href = "http://localhost:8086/salud/login"
+                ,
+                error:
+                    alert("Error en el registro")
+                ,
+            });
+        }
+    });
+</script>
+</body>
+</html>

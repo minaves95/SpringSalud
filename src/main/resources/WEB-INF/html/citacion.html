@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citación</title>
+    <link rel="stylesheet" href="../css/bootstrap.css" type="text/css" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link type="text/css" href="../css/form.css" th:href="@{/css/form.css}" rel="stylesheet">
+    <link rel="shortcut icon" href="#">
+</head>
+<body>
+<div class="container w-50 my-5 rounded shadow bg-primary">
+    <div class="row align-items-lg-stretch">
+        <div class="col p-5 rounded-end bg-white">
+            <div class="text-tema text-center">
+                <h3 class="fw-bold"><img class="float-lg-none" th:src="@{/img/logoSS.png}" alt="SS" width="24">eguridad
+                    <img class="float-lg-none" th:src="@{/img/logoSS.png}" alt="SS" width="24">ocial </h3>
+            </div>
+
+            <form class="requires-validation" id="form-login" novalidate> <!-- method="post" -->
+                <div class="mt-5">
+                    <div class="mb-5">
+                        <select id="medico" class="form-select text-tema text-center" required>
+                            <option th:each="medico : ${medicos}" th:text="${medico.codMedico} + ' - ' + ${medico.nombreCompleto}"></option>
+                        </select>
+                        <div class="float-start valid-feedback" th:text="#{citacion.valid.medico}"/>
+                        <div class="float-start invalid-feedback" th:text="#{citacion.invalid.medico}"/>
+                    </div>
+                    <div class="mb-5">
+                        <input class="form-control text-center" type="date" min="1" id="fecha" required>
+                        <div class="float-start valid-feedback" th:text="#{citacion.valid.fecha}"/>
+                        <div class="float-start invalid-feedback" th:text="#{citacion.invalid.fecha}"/>
+                    </div>
+                    <div class="mb-5">
+                        <input class="form-control text-center" type="time" id="hora" required>
+                        <div class="float-start valid-feedback" th:text="#{citacion.valid.hora}"/>
+                        <div class="float-start invalid-feedback" th:text="#{citacion.invalid.hora}"/>
+                    </div>
+                    <div class="mb-5">
+                        <select id="tipo" class="form-select text-tema text-center" required>
+                            <option selected disabled th:text="#{citacion.ph.tipo}" value=""></option>
+                            <option>Telefónica</option>
+                            <option>Presencial</option>
+                        </select>
+                        <div class="float-start valid-feedback" th:text="#{citacion.valid.tipo}"/>
+                        <div class="float-start invalid-feedback" th:text="#{citacion.invalid.tipo}"/>
+                    </div>
+                    <div class="mb-5">
+                        <input id="causa" type="text" class="form-control text-center" required
+                               pattern="[a-zA-ZÀ-ÿ ]{1,45}" th:placeholder="#{citacion.ph.causa}">
+                        <div class="float-start valid-feedback" th:text="#{citacion.valid.causa}"/>
+                        <div class="float-start invalid-feedback" th:text="#{citacion.invalid.causa}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-button d-grid rounded">
+                            <button type="submit" id="cita-button" class="btn fw-bold text-white" th:text="#{citacion.boton.cita}">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.requires-validation')
+        Array.from(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+
+    var direccion = new String();
+
+    function getData() {
+        var data = [];
+        var paciente;
+        var medico = document.getElementById('medico').value;
+        var fecha = document.getElementById('fecha').value;
+        var hora = document.getElementById('hora').value;
+        var fechaCita = fecha + " " + hora;
+        var tipo = document.getElementById('tipo').value;
+        var causa = document.getElementById('causaa').value;
+        data.push(paciente, medico, fechaCita, tipo, causa);
+        return data;
+    }
+
+    function validarIsEmpty(data) {
+        for (var i = 0; i < data.length; i++) {
+            if (data[i] == "") {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function buildURL(data, url) {
+        url = "http://localhost:8086/salud/api/cita/insert=" + data[0];
+        for (var i = 1; i < data.length; i++) {
+            url += "," + data[i];
+        }
+        return url;
+    }
+
+    $("#cita-button").on("click", function () {
+        if (validarIsEmpty(getData())) {
+            direccion = buildURL(getData(), "");
+            $.ajax({
+                type: 'POST',
+                url: direccion,
+                success:
+                    window.location.href = ""
+                ,
+                error:
+                    alert("Error en la citación")
+                ,
+            });
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/bootstrap.css" type="text/css" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="shortcut icon" href="#">
+</head>
+<style>
+    .separador {
+        border-left: 2px solid white;
+        height: 100%;
+    }
+</style>
+<body>
+
+<!-- NAVBAR -->
+<nav th:insert="fragments/navigation_admin.html :: navbar_admin"> </nav>
+
+<div class="container-fluid" style="width: 90%">
+    <div class="table table-responsive">
+        <table id="table_medico" class="table caption-top">
+            <caption id="table_caption" class="fw-bold text-center text-primary" th:text="#{table_medico.caption}"
+                     style="font-size: large"></caption>
+            <thead>
+            <tr class="text-center text-light bg-primary" style="font-size: small">
+                <th id="thcol0" scope="col" th:text="#{table_medico.col0}"/>
+                <th id="thcol1" scope="col" th:text="#{table_medico.col1}"/>
+                <th id="thcol2" scope="col" th:text="#{table_medico.col3}"/>
+                <th id="thcol3" scope="col" th:text="#{table_medico.col5}"/>
+                <th id="thcol4" scope="col" th:text="#{table_medico.col6}"/>
+                <th id="thcol5" scope="col" th:text="#{table_medico.col7}"/>
+                <th id="thcol6" scope="col" th:text="#{table_medico.col8}"/>
+                <th id="thcol7" scope="col" th:text="#{table_medico.col9}"/>
+                <th id="thcol8" scope="col" th:text="#{table_medico.col10}"/>
+                <th id="thcol9" scope="col" th:text="#{table_medico.col11}"/>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="result text-center" style="border-bottom: 2px solid #0d6efd; font-size: small"
+                data-th-each="medico : ${medicos}">
+                <td th:id="'td0' + ${medicoStat.index}" th:text="${medico.codMedico}"/>
+                <td th:id="'td1' + ${medicoStat.index}" th:text="${medico.nombreCompleto}"/>
+                <td th:id="'td2' + ${medicoStat.index}" th:text="${medico.telefonoConsulta}"/>
+                <td th:id="'td3' + ${medicoStat.index}" th:text="${medico.domicilio}"/>
+                <td th:id="'td4' + ${medicoStat.index}" th:text="${medico.localidad}"/>
+                <td th:id="'td5' + ${medicoStat.index}" th:text="${medico.provincia}"/>
+                <td th:id="'td6' + ${medicoStat.index}" th:text="${medico.codPostal}"/>
+                <td th:id="'td7' + ${medicoStat.index}" th:text="${medico.nacionalidad}"/>
+                <td th:id="'td8' + ${medicoStat.index}" th:text="${medico.vacunado}"/>
+                <td th:id="'td9' + ${medicoStat.index}" th:text="${medico.centro.codCentro}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript" src="../js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+
+    var medicos = [[${medicos}]];
+    var centros = [[${centros}]];
+
+    function hideIcon(self) {
+        self.style.backgroundImage = 'none';
+    }
+
+    function showIcon(self) {
+        self.style.backgroundImage = "url('/icons/search.svg')";
+    }
+
+    $('#buscador').on('keyup', function () {
+        var value = $(this).val();
+        var data = filtrarTabla(value, medicos);
+        refrescarTabla(data);
+    });
+
+    function filtrarTabla(value, data1) {
+        var filteredData = [];
+        for (var i = 0; i < data1.length; i++) {
+            value = value.toLowerCase();
+            var filteredNombre = data1[i].nombreCompleto.toLowerCase();
+            var filteredTelefono = data1[i].telefonoConsulta.toLowerCase();
+            var filteredDomicilio = data1[i].domicilio.toLowerCase();
+            var filteredLocalidad = data1[i].localidad.toLowerCase();
+            var filteredProvincia = data1[i].provincia.toLowerCase();
+            var filteredCodPostal = data1[i].codPostal.toLowerCase();
+            var filteredNacionalidad = data1[i].nacionalidad.toLowerCase();
+            var filteredVacunado = data1[i].vacunado + "";
+            var filteredCentro = data1[i].centro.codCentro + "";
+
+            if (filteredNombre.includes(value) || filteredTelefono.includes(value) || filteredDomicilio.includes(value) || filteredLocalidad.includes(value) ||
+                filteredProvincia.includes(value) || filteredCodPostal.includes(value) || filteredNacionalidad.includes(value) ||
+                filteredVacunado.includes(value) || filteredCentro.includes(value) ){
+                filteredData.push(data1[i]);
+            }
+        }
+        return filteredData;
+    }
+
+    function refrescarTabla(data) {
+
+        var table = document.getElementById("table_medico");
+        var caption = document.getElementById("table_caption").innerText;
+
+        var header = [];
+        for (var i = 0; i < table.rows[0].cells.length; i++) {
+            var headerCol = document.getElementById("thcol" + (i)).innerText;
+            header.push(headerCol);
+        }
+
+        table.innerHTML = ''
+        var cabecera = `<caption id="table_caption" class="fw-bold text-center text-primary"
+                     style="font-size: large">${caption}</caption>
+                <thead>
+                <tr class="text-center text-light bg-primary" style="font-size: small">
+                    <th id="thcol0" scope="col">${header[0]}</th>
+                    <th id="thcol1" scope="col">${header[1]}</th>
+                    <th id="thcol2" scope="col">${header[2]}</th>
+                    <th id="thcol3" scope="col">${header[3]}</th>
+                    <th id="thcol4" scope="col">${header[4]}</th>
+                    <th id="thcol5" scope="col">${header[5]}</th>
+                    <th id="thcol6" scope="col">${header[6]}</th>
+                    <th id="thcol7" scope="col">${header[7]}</th>
+                    <th id="thcol8" scope="col">${header[8]}</th>
+                    <th id="thcol9" scope="col">${header[9]}</th>
+
+                 </tr>
+                </thead>`
+        table.innerHTML = cabecera;
+
+        if ($('#buscador').val() != '') {
+            for (var i = 0; i < data.length; i++) {
+                var row = `
+                <tbody>
+                <tr class="result text-center" style="border-bottom: 2px solid #0d6efd; font-size: small">
+                            <td>${data[i].codMedico}</td>
+                            <td>${data[i].nombreCompleto}</td>
+                            <td>${data[i].telefonoConsulta}</td>
+                            <td>${data[i].domicilio}</td>
+                            <td>${data[i].localidad}</td>
+                            <td>${data[i].provincia}</td>
+                            <td>${data[i].codPostal}</td>
+                            <td>${data[i].nacionalidad}</td>
+                            <td>${data[i].vacunado}</td>
+                            <td>${data[i].centro.codCentro}</td>
+                       </tr>
+                </tbody>`
+                table.innerHTML += row;
+            }
+        } else {
+            for (var i = 0; i < medicos.length; i++) {
+                var row = `
+                <tbody>
+                <tr class="result text-center" style="border-bottom: 2px solid #0d6efd; font-size: small">
+                             <td>${medicos[i].codMedico}</td>
+                            <td>${medicos[i].nombreCompleto}</td>
+                            <td>${medicos[i].telefonoConsulta}</td>
+                            <td>${medicos[i].domicilio}</td>
+                            <td>${medicos[i].localidad}</td>
+                            <td>${medicos[i].provincia}</td>
+                            <td>${medicos[i].codPostal}</td>
+                            <td>${medicos[i].nacionalidad}</td>
+                            <td>${medicos[i].vacunado}</td>
+                            <td>${medicos[i].centro.codCentro}</td>
+                       </tr>
+                </tbody>`
+                table.innerHTML += row;
+            }
+        }
+    }
+</script>
+</body>
+</html>
+
